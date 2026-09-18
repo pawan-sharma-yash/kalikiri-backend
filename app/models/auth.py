@@ -1,9 +1,15 @@
 import re
 
-from pydantic import BaseModel, field_validator
+from pydantic import BaseModel, ConfigDict, field_validator
 
 
 class LoginRequest(BaseModel):
+    model_config = ConfigDict(
+        hide_input_in_errors=True,
+        # Pydantic-native way to reduce noise: hides `input` field from errors
+        # url/context also filtered in handler via errors(include_...=False) when supported
+    )
+
     email: str
     password: str
 
